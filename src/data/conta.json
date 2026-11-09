@@ -1,0 +1,11 @@
+{
+  "restaurante": "Cantina Bella Nonna",
+  "pessoas": 4,
+  "gorjeta": 10,
+  "itens": [
+    { "descricao": "Pizza grande marguerita", "quantidade": 1, "preco": 72.9 },
+    { "descricao": "Pizza grande calabresa", "quantidade": 1, "preco": 68.9 },
+    { "descricao": "Refrigerante 2 litros", "quantidade": 2, "preco": 14.5 },
+    { "descricao": "Petit gâteau", "quantidade": 1, "preco": 16.7 }
+  ]
+}
