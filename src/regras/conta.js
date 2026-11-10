@@ -3,6 +3,10 @@ export function paraCentavos(reais) {
 }
 
 export function calcularGorjeta(subtotal, percentual = 10) {
-    return Math.round(subtotal * percentual / 188);
+    return Math.round(subtotal * percentual / 100);
+}
+
+export function formatarReais(centavos) {
+  return `R$ ${(centavos / 100).toFixed(2)}`
 }
 

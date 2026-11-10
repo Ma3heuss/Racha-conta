@@ -1,11 +1,10 @@
 import fs from 'node:fs';
 import pc from 'picocolors';
-import { paraCentavos, calcularGorjeta } from '../regras/conta.js';
-
-
+import { paraCentavos, calcularGorjeta, formatarReais} from '../regras/conta.js';
 
 const texto = fs.readFileSync('src/data/conta.json', 'utf-8');
 const conta = JSON.parse(texto);
+const subtotal = conta.itens.reduce((total, item) => total + item.preco * item.quantidade, 0);
 
 
 console.log('Racha-conta:', conta.restaurante);
@@ -14,45 +13,29 @@ console.log('Itens na conta:', conta.itens.length);
 console.table(conta.itens);
 
 
-
-
-
-
-
-
-const subtotal = conta.itens.reduce((total, item) => total + item.preco * item.quantidade, 0);
-
 const subtotalCentavos = paraCentavos(subtotal);
-const totalCentavos = subtotalCentavos + gorjetaCentavos;
-const Total = (totalCentavos / 100).toFixed(2)
-
-
-
-
-console.log(pc.bold(pc.greenBright('racha-conta:')), conta.restaurante);
-
-
-
-const quantidadetotal = conta.itens.reduce((total, item) => total + item.quantidade, 0)
-console.log("unidades pedidas: ", quantidadetotal)
-
-const acima = conta.itens.filter( x =>  x.preco > 50,);
-console.log("acima de 50: ", acima.length)
-
 const gorjetaCentavos = calcularGorjeta(subtotalCentavos, conta.gorjeta);
+const totalCentavos = subtotalCentavos + gorjetaCentavos;
+const Total = (formatarReais(totalCentavos));
 
-console.log(`Subtotal: R$ ${(subtotalCentavos / 100).toFixed(2)}`);
-console.log(`Gorjeta (${conta.gorjeta}%): R$ ${(gorjetaCentavos / 100).toFixed(2)}`);
-console.log(`Total: R$ ${(totalCentavos / 100).toFixed(2)}`);
+console.log(`Subtotal: R$ ${(formatarReais(subtotalCentavos))}`);
+console.log(`Gorjeta (${conta.gorjeta}%):  ${(formatarReais(gorjetaCentavos))}`);
+console.log(`Total: R$ ${Total}`);
 
-
-const porpessoa = Math.floor( Total / 4)
-console.log("por pessoa ", porpessoa)
-const sobra = Total % 4
-console.log(sobra)
-
-console.log(`por pessoa: ${(Total / 4).toFixed(2)}`)
-console.log(`Centavos que sobram:  ${Math.round(Total % 4)}`)
+//console.log('subtotal:', subtotal.toFixed(2))
+// console.log(pc.bold('Racha-conta:'), conta.restaurante);
 
 
+// Unidades pedidas quantidades de todos os itens
+const UnidadesPedidas = conta.itens.reduce((total, item) => total + item.quantidade, 0);
+console.log('Unidades pedidas: ', UnidadesPedidas)
 
+
+const filtro = conta.itens.filter(numero => numero.preco > 50);
+console.log('Itens acima de R$ 50: ', filtro.length)
+
+console.log(`Por pessoa:  ${formatarReais(totalCentavos / conta.pessoas)}`);
+console.log(`Centavos que sobram: ${formatarReais(Math.round(totalCentavos % 4))}`);
+
+
+console.log(formatarReais(totalCentavos))
