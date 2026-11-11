@@ -39,3 +39,4 @@ console.log(`Centavos que sobram: ${formatarReais(Math.round(totalCentavos % 4))
 
 
 console.log(formatarReais(totalCentavos))
+
